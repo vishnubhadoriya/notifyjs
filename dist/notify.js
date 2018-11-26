@@ -195,6 +195,7 @@
 		breakNewLines: true,
 		elementPosition: "bottom",
 		globalPosition: "top right",
+		globalAppendType : "prepend", // prepend,append,html
 		style: "bootstrap",
 		className: "error",
 		showAnimation: "slideDown",
@@ -346,6 +347,7 @@
 		var align = positions[pAlign];
 		var key = pMain + "|" + pAlign;
 		var anchor = globalAnchors[key];
+		var gNotifyTpe = this.globalAppendType();
 		if (!anchor || !document.body.contains(anchor[0])) {
 			anchor = globalAnchors[key] = createElem("div");
 			var css = {};
@@ -360,7 +362,7 @@
 			anchor.css(css).addClass(pluginClassName + "-corner");
 			$("body").append(anchor);
 		}
-		return anchor.prepend(this.wrapper);
+		return anchor[gNotifyTpe](this.wrapper);
 	};
 
 	Notification.prototype.setElementPosition = function() {
@@ -452,6 +454,12 @@
 		}
 		return pos;
 	};
+
+	Notification.prototype.globalAppendType = function() {
+		var type;
+		type = this.options.globalAppendType || "prepend";
+		return type;
+	}
 
 	Notification.prototype.getStyle = function(name) {
 		var style;
